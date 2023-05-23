@@ -4,7 +4,6 @@ import couchdb
 from fastapi import FastAPI
 import pydantic
 from pydantic import BaseModel
-import requests 
 import hashlib
 from hashlib import md5 
 import uvicorn
@@ -14,6 +13,8 @@ from config import *
 import regex as re
 import validate_email
 from validate_email import validate_email
+
+
 class Articles(BaseModel):
     content: str
     author: str
