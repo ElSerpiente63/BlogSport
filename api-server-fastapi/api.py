@@ -27,6 +27,7 @@ class Register(BaseModel):
 class Login(BaseModel):
     username: str
     password: str
+
 import importlib.util
 module_spec = importlib.util.spec_from_file_location('config', 'C:/Users/33769/Desktop/config/config.py')
 module = importlib.util.module_from_spec(module_spec)
@@ -55,10 +56,10 @@ async def admin_login(login: Login):
 
 @api.post('/register')    
 async def register(reg: Register):
-    url = f"http://{username}:{password}@127.0.0.1:5984/blogsportusers/_design/Users/_view/Register?key='" + reg['username'] + '"'
+    url = f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportusers/_design/Users/_view/Register?key='" + reg['username'] + '"'
     response = requests.get(url)
     doc = response.text
-    database = couchdb.Database(f'http:{username}:{password}@127.0.0.1:5984/blogsportusers')
+    database = couchdb.Database(f'http:{module.username}:{module.password}@127.0.0.1:5984/blogsportusers')
     payload = {
         "username": reg["username"],
         "password":hashlib.md5(str.encode(reg['password'])).hexdigest()
@@ -75,7 +76,7 @@ async def post_articles(articles: Articles):
     random_id = str(uuid.uuid4())
     articles['__id__'] = random_id
     token_hash = hashlib.md5(str.encode(articles['token'])).hexdigest()
-    url = f"http://{username}:{password}@127.0.0.1:5984/blogsportsession/_design/Sessions/_view/connection?key='{token_hash}"
+    url = f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportsession/_design/Sessions/_view/connection?key='{token_hash}"
     database = couchdb.Database(url)
     response = requests.get(url)
     doc = response.json()
