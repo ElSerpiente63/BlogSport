@@ -28,13 +28,8 @@ class MainFront(UserControl):
         return ft.View(
             "/home",
             bgcolor=ft.colors.WHITE,
-            controls= [ft.Column(expand=True, alignment=ft.MainAxisAlignment.CENTER, controls=[ft.Row(
-                    expand=True,
-                    wrap=False,
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    vertical_alignment=ft.CrossAxisAlignment.START,
-                    controls=[
-                        ft.Container(padding=20,content=ft.Text('BlogSport', weight='bold', italic=True,size=35))])]),
-                        ]),
+            controls=[
+                ft.Column(expand=True, wrap=False, alignment=ft.MainAxisAlignment.START, controls=[ft.Row(alignment=ft.MainAxisAlignment.CENTER, vertical_alignment=ft.CrossAxisAlignment.CENTER, controls=[ft.Container(padding=40, content=ft.Text('Blogsport'))]), ft.Row(alignment=ft.MainAxisAlignment.END, vertical_alignment=ft.CrossAxisAlignment.START, controls=[ft.Container(height=200,alignment=ft.alignment.top_left,padding=padding.only(right=20, bottom=50),content=ft.TextButton('Login'))])])
+            ])   
 flet.app(target=main, port=4000, view=ft.WEB_BROWSER)
 
