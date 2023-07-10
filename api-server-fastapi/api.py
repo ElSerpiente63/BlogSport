@@ -21,9 +21,11 @@ class Articles(BaseModel):
     token: str
     password: str
     username: str
+
 class Register(BaseModel):
     username: str
     password: str
+
 class Login(BaseModel):
     username: str
     password: str
@@ -32,6 +34,7 @@ import importlib.util
 module_spec = importlib.util.spec_from_file_location('config', 'C:/Users/33769/Desktop/config/config.py')
 module = importlib.util.module_from_spec(module_spec)
 module_spec.loader.exec_module(module)
+
 api = FastAPI()
 #vue couchdb à créer, les appels db/vue ne sont pas officiels
 @api.post('/login')
@@ -85,17 +88,6 @@ async def post_articles(articles: Articles):
         database.save(articles)
     else:
         return {"Status":"Not done"}
-
-
-
-
-#@api.post('/getarticles')
-#@api.post('/getarticles/{id}')
-
-
-
-
-
 
 
 if __name__ == '__main__':
