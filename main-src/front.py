@@ -8,6 +8,8 @@ import regex
 import flet as ft
 import requests
 column_ref = ft.Ref[ft.Column]()
+textfield_username_ref = ft.Ref[ft.TextField]()
+textfield_password_ref = ft.Ref[ft.TextField]()
 def main(page: ft.Page):
     page.title = "BlogSport"
     page.bgcolor = ft.colors.WHITE
@@ -23,13 +25,34 @@ def main(page: ft.Page):
     page.go(page.route)
     page.views.append(MainFront().build())
     page.update()
-class MainFront(UserControl):
+
+class LoginAdmin(UserControl):
     def build(self):
         return ft.View(
+            "/login",
+            bgcolor=ft.colors.WHITE,
+            controls=[
+                ft.Column(expand=True, wrap=False, alignment=ft.MainAxisAlignment.CENTER, controls=[ft.TextField(ref=textfield_username_ref, label="username"), ft.TextField(ref=textfield_password_ref, label="password", passwrd=True), ft.TextButton("Login")])
+            ]
+        )
+
+class MainFront(UserControl):
+    def build(self):
+        self.view =  ft.View(
             "/home",
             bgcolor=ft.colors.WHITE,
             controls=[
-                ft.Column(expand=True, wrap=False, alignment=ft.MainAxisAlignment.START, controls=[ft.Row(alignment=ft.MainAxisAlignment.CENTER, vertical_alignment=ft.CrossAxisAlignment.CENTER, controls=[ft.Container(padding=40, content=ft.Text('Blogsport'))]), ft.Row(alignment=ft.MainAxisAlignment.END, vertical_alignment=ft.CrossAxisAlignment.START, controls=[ft.Container(height=200,alignment=ft.alignment.top_left,padding=padding.only(right=20, bottom=50),content=ft.TextButton('Login'))])])
-            ])   
+                ft.Column(expand=True, wrap=False, alignment=ft.MainAxisAlignment.START, controls=[ft.Row(alignment=ft.MainAxisAlignment.CENTER, vertical_alignment=ft.CrossAxisAlignment.CENTER, controls=[ft.Container(padding=40, content=ft.Text('Blogsport'))]), ft.Row(alignment=ft.MainAxisAlignment.END, vertical_alignment=ft.CrossAxisAlignment.START, controls=[ft.Container(height=200,alignment=ft.alignment.top_left,padding=padding.only(right=20, bottom=50),content=ft.TextButton('Login', on_click=lambda e: e.page.go('/login')))]), ft.Row(expand=True, wrap=False, alignment=ft.MainAxisAlignment.CENTER, vertical_alignment=ft.CrossAxisAlignment.STRETCH, controls=[ft.Column(ref=column_ref,expand=True, alignment=ft.MainAxisAlignment.spaceEvenly,controls=[])])])
+            ])
+        #on travaille d'abord avec une liste de titres
+        self.response = requests.get('http://127.0.0.1:4001/articles')
+        for i in range(len(self.response)):
+            column_ref.controls.append(ft.Container(
+                width=200,
+                height=200,
+                elevation=10,
+                content=ft.Text(str(self.response[i]), weight="bold"),
+                alignment=ft.alignment.top_center,
+            ))   
 flet.app(target=main, port=4000, view=ft.WEB_BROWSER)
 

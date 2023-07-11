@@ -8,8 +8,6 @@ import hashlib
 from hashlib import md5 
 import uvicorn
 from uvicorn import *
-import config
-from config import *
 import regex as re
 import validate_email
 from validate_email import validate_email
@@ -75,7 +73,7 @@ async def register(reg: Register):
 
 
 @api.post('/post_articles')
-async def post_articles(articles: Articles):
+async def post_articles(articles: Articles)->dict:
     random_id = str(uuid.uuid4())
     articles['__id__'] = random_id
     token_hash = hashlib.md5(str.encode(articles['token'])).hexdigest()
@@ -90,5 +88,17 @@ async def post_articles(articles: Articles):
         return {"Status":"Not done"}
 
 
+@api.get("/articles")
+async def get_articles()->list:
+    response = requests.get(f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportarticles/_design/title/_view/title")
+    list_to_return = []
+    print(len(response.json()['rows']))
+    for i in range(len(response.json()['rows'])):
+        print(response.json()['rows'][i]['key'])
+        list_to_return.append(response.json()['rows'][i]['key'])
+    print(list_to_return)
+    return list_to_return
+
+
 if __name__ == '__main__':
-    uvicorn.run(api, host='127.0.0.1', port=4000)
+    uvicorn.run(api, host='127.0.0.1', port=4001)
