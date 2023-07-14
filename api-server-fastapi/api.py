@@ -94,7 +94,6 @@ async def get_articles()->list:
     list_to_return = []
     print(len(response.json()['rows']))
     for i in range(len(response.json()['rows'])):
-        print(response.json()['rows'][i]['key'])
         list_to_return.append(response.json()['rows'][i]['key'])
     print(list_to_return)
     return list_to_return
