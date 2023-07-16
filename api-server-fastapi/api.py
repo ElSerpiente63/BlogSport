@@ -98,6 +98,7 @@ async def get_articles()->list:
     print(list_to_return)
     return list_to_return
 
-
+@api.get("/content")
+async def return_content()
 if __name__ == '__main__':
     uvicorn.run(api, host='127.0.0.1', port=4001)
