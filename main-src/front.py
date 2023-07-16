@@ -54,7 +54,7 @@ class MainFront(UserControl):
                 self.column_append.controls.append(ft.Container(
                     width=600,
                     height=200,
-                    content=ft.Text(str(self.response.json()[i]), weight="bold"),
+                    content=ft.Text(str(self.response.json()[i]["title"]), weight="bold"),
                     alignment=ft.alignment.top_center,
                 ))
         else:
@@ -63,7 +63,7 @@ class MainFront(UserControl):
 
 #mettre le texte sur une ligne chaque 60 caractères, police 18
 class News(UserControl):
-    def build(self, title: str):
+    def build(self, id: str):
         self.content = requests.get("http://")
         return ft.View(
             title,

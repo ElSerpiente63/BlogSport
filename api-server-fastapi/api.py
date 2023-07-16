@@ -89,16 +89,17 @@ async def post_articles(articles: Articles)->dict:
 
 
 @api.get("/articles")
-async def get_articles()->list:
+async def get_articles()->dict:
     response = requests.get(f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportarticles/_design/title/_view/title")
-    list_to_return = []
     print(len(response.json()['rows']))
+    __list__ = []
     for i in range(len(response.json()['rows'])):
-        list_to_return.append(response.json()['rows'][i]['key'])
-    print(list_to_return)
-    return list_to_return
-
+        __list__.append({"title":response.json()['rows'][i]['key'], "id":response.json()['rows'][i]['value']})
+    return __list__
+ 
 @api.get("/content")
-async def return_content()
+async def return_content():
+    pass
+#pour le moment on pass 
 if __name__ == '__main__':
     uvicorn.run(api, host='127.0.0.1', port=4001)
