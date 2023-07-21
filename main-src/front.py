@@ -58,15 +58,17 @@ class MainFront(UserControl):
         self.response = requests.get('http://127.0.0.1:4001/articles')
         if self.response.status_code == 200:
             for i in range(len(self.response.json())):
-                self._column.controls.append(ft.Card(elevation=5,content=ft.Container(
+                self.__container__ = ft.Container(
                     width=900,
                     height=150,
                     content=ft.Text(str(self.response.json()[i]["title"]), weight="bold"),
                     alignment=ft.alignment.top_center,
-                    on_click=print(self.response.json()[i]["title"]),
                     border_radius=5,
                     bgcolor="#f2f2f2"
-                )))
+                )
+                self._column.controls.append(ft.Card(elevation=5,content=self.__container__))
+                self.__response__ = self.response.json()[i]["title"]
+                self.__container__.on_click = lambda e: e.page.go(f'/{self.__response__}')
         else:
             print("Status not done")
         return self.view

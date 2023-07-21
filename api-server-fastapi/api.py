@@ -28,6 +28,11 @@ class Login(BaseModel):
     username: str
     password: str
 
+class Content(BaseModel):
+    id: str
+    title: str
+
+
 import importlib.util
 module_spec = importlib.util.spec_from_file_location('config', 'C:/Users/33769/Desktop/config/config.py')
 module = importlib.util.module_from_spec(module_spec)
@@ -98,8 +103,9 @@ async def get_articles()->dict:
     return __list__
  
 @api.get("/content")
-async def return_content():
-    pass
-#pour le moment on pass 
+async def return_content(content: Content):
+    url = f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsport"
+    response = requests.get()
+ 
 if __name__ == '__main__':
     uvicorn.run(api, host='127.0.0.1', port=4001)
