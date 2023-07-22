@@ -56,19 +56,20 @@ class MainFront(UserControl):
             ])
         #on travaille d'abord avec une liste de titres
         self.response = requests.get('http://127.0.0.1:4001/articles')
+        self.__list__ = []
         if self.response.status_code == 200:
             for i in range(len(self.response.json())):
+                self._ref_ = Ref[Container]()
                 self.__container__ = ft.Container(
                     width=900,
                     height=150,
                     content=ft.Text(str(self.response.json()[i]["title"]), weight="bold"),
                     alignment=ft.alignment.top_center,
                     border_radius=5,
-                    bgcolor="#f2f2f2"
+                    bgcolor=ft.colors.WHITE,
+                    on_click=lambda e: print(self.__container__)
                 )
                 self._column.controls.append(ft.Card(elevation=5,content=self.__container__))
-                self.__response__ = self.response.json()[i]["title"]
-                self.__container__.on_click = lambda e: e.page.go(f'/{self.__response__}')
         else:
             print("Status not done")
         return self.view
