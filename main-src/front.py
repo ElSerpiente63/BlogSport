@@ -57,6 +57,11 @@ class MainFront(UserControl):
         #on travaille d'abord avec une liste de titres
         self.response = requests.get('http://127.0.0.1:4001/articles')
         self.__list__ = []
+        def on_container_click(index):
+            def click_handler(e):
+                print(self.response.json()[index]["title"])
+            return click_handler
+
         if self.response.status_code == 200:
             for i in range(len(self.response.json())):
                 self._ref_ = Ref[Container]()
@@ -67,9 +72,9 @@ class MainFront(UserControl):
                     alignment=ft.alignment.top_center,
                     border_radius=5,
                     bgcolor=ft.colors.WHITE,
-                    on_click=lambda e: print(self.__container__)
+                    on_click=on_container_click(i)  # Utilise la fonction intermédiaire ici
                 )
-                self._column.controls.append(ft.Card(elevation=5,content=self.__container__))
+                self._column.controls.append(ft.Card(elevation=5, content=self.__container__))
         else:
             print("Status not done")
         return self.view
