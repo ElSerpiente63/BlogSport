@@ -29,8 +29,7 @@ class Login(BaseModel):
     password: str
 
 class Content(BaseModel):
-    id: str
-    title: str
+    ide: str
 
 
 import importlib.util
@@ -41,7 +40,7 @@ module_spec.loader.exec_module(module)
 api = FastAPI()
 #vue couchdb à créer, les appels db/vue ne sont pas officiels
 @api.post('/login')
-async def admin_login(login: Login):
+async def admin_login(login: Login)->dict:
     response = requests.get(f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportusers/_design/login/_view/loadlogin?key='" + login['username'] + '"')
     print(response)
     doc = response.json()
@@ -61,7 +60,7 @@ async def admin_login(login: Login):
         return {"Passed":"False"}
 
 @api.post('/register')    
-async def register(reg: Register):
+async def register(reg: Register)->dict:
     url = f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportusers/_design/Users/_view/Register?key='" + reg['username'] + '"'
     response = requests.get(url)
     doc = response.text
@@ -99,13 +98,16 @@ async def get_articles()->dict:
     print(len(response.json()['rows']))
     __list__ = []
     for i in range(len(response.json()['rows'])):
-        __list__.append({"title":response.json()['rows'][i]['key'], "id":response.json()['rows'][i]['value']})
+        __list__.append({"title":response.json()['rows'][i]['key'], "id":response.json()['rows'][i]['value']['first_value'], "content":response.json()['rows'][i]["value"]["second_value"]})
     return __list__
  
-@api.get("/content")
-async def return_content(content: Content):
-    url = f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsport"
-    response = requests.get()
+@api.post("/content")
+async def return_content(content: Content)->dict:
+    url = f'http://{module.username}:{module.password}@127.0.0.1:5984/blogsportarticles/_design/content/_view/content?key"{content["ide"]}"'
+    response = requests.get(url)
+    doc = response.json()
+    json = {"content":doc['rows'][0]['value']}
+    return json
  
 if __name__ == '__main__':
     uvicorn.run(api, host='127.0.0.1', port=4001)

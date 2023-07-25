@@ -60,6 +60,7 @@ class MainFront(UserControl):
         def on_container_click(index):
             def click_handler(e):
                 print(self.response.json()[index]["title"])
+                News(self.response.json()[index]["id"],self.response.json()[index]["title"])
             return click_handler
 
         if self.response.status_code == 200:
@@ -81,12 +82,19 @@ class MainFront(UserControl):
 
 #mettre le texte sur une ligne chaque 60 caractères, police 18
 class News(UserControl):
-    def build(self, title: str):
-        self.content = requests.get("http://")
-        return ft.View(
-            title,
-            controls = [
+    def __init__(self, ide: str,title: str):
+        self.title = title 
+        self.ide = ide
+        self.json = {"ide":self.ide}
+        self.response = requests.post('http://127.0.0.1:4001/content', json=self.json)
+        print(self.response.json())
+        self.create_view()
 
+    def create_view(self):
+        return ft.View(
+            f"/{self.title}",
+            controls = [
+                ft.Text("Something", weight="bold")
             ]
         )   
 flet.app(target=main, port=4000, view=ft.WEB_BROWSER)
