@@ -17,9 +17,10 @@ for i in range(len(response.json()['rows'])):
 
 for i in range(len(__list__)):
     id_doc = __list__[i]
-    new_key = 'content'
-    new_value = str(uuid.uuid4())
-    doc = database[id_doc]
-    doc[new_key] = new_value
-    database[id_doc] = doc
+    key = 'title'
+    document = database[id_doc]
+    document[key] = str(uuid.uuid4())
+    database[id_doc] = document  
+res = requests.get(f"http://{module.username}:{module.password}@127.0.0.1:5984/blogsportarticles/_design/title/_view/title")
+print(res.json())
 print('Done')

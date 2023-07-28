@@ -10,7 +10,7 @@ import requests
 column_ref = ft.Ref[ft.Column]()
 textfield_username_ref = ft.Ref[ft.TextField]()
 textfield_password_ref = ft.Ref[ft.TextField]()
-def main(page: ft.Page):
+def main(page: ft.Page): 
     page.title = "BlogSport"
     page.bgcolor = ft.colors.WHITE
     def route_change(route):
