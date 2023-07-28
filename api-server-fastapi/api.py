@@ -86,8 +86,10 @@ async def post_articles(articles: Articles)->dict:
     response = requests.get(url)
     doc = response.json()
     #pas sur pour cette condition faut que j'analyse la réponse que me donne la db
-    if str(token_hash) == doc['rows'][0]['key']:
+    #avant on coupe le titre selon le modèle suivant 'c98e3bd1-e020-479b-8815-b2d597e8ccc' et cela avec une fonction qui join avec des tirets
+    if str(token_hash) == doc['rows'][0]['key']: #on rajoutera une condition de longueur de titre et une condition 
         database.save(articles)
+        return {"Status":"Done"}
     else:
         return {"Status":"Not done"}
 
