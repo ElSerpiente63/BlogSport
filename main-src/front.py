@@ -94,12 +94,9 @@ class News(UserControl):
         self.response = requests.post('http://127.0.0.1:4001/content', json={"data":"data"})
         print(self.response.json())
         page.bgcolor = ft.colors.WHITE
-        page.add(
-            ft.Text("something")
-        )
         self.view = ft.View(
             f"/{self.title}",
-            bgcolor=ft.colors.BLACK,
+            bgcolor=ft.colors.WHITE,
             controls = [
                 ft.Column(expand=True, wrap=False, controls=[ft.Text("Something")])
             ]
