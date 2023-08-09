@@ -98,7 +98,7 @@ class News(UserControl):
             f"/{self.title}",
             bgcolor=ft.colors.WHITE,
             controls = [
-                ft.Column(expand=True, wrap=False, controls=[ft.Text("Something")])
+                ft.Column(expand=True, wrap=False, controls=[])
             ]
         )
         return self.view   
