@@ -90,17 +90,31 @@ class MainFront(UserControl):
 class News(UserControl):
     def build(self, title: str, page: ft.Page, text: str):
         self.title = title
+        self.text = text 
         super().__init__()
         self.response = requests.post('http://127.0.0.1:4001/content', json={"data":"data"})
         print(self.response.json())
         page.bgcolor = ft.colors.WHITE
+        self._column_ = ft.Column(expand=True, wrap=False, controls=[])
         self.view = ft.View(
             f"/{self.title}",
             bgcolor=ft.colors.WHITE,
             controls = [
-                ft.Column(expand=True, wrap=False, controls=[])
+                self._column_,
             ]
         )
+        lines: int = len(self.text)/50
+        def couper_en_morceaux(chaine, longueur_morceau: int)->list:
+            morceaux = [chaine[i:i+longueur_morceau] for i in range(0, len(chaine), longueur_morceau)]
+            return morceaux
+        for i in range(int(lines)):
+            self._container_ = ft.Container(
+                height=5,
+                weight=100,
+                content=ft.Text(str(couper_en_morceaux(self.text, 50)[i])),
+                padding=padding.only(bottom=40, top=10)
+                )
+            self._column_.controls.append(self._container_)
         return self.view   
 flet.app(target=main, port=4000, view=ft.WEB_BROWSER)
 
