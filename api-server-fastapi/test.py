@@ -28,7 +28,7 @@ for i in range(len(__list__)):
     database[id_doc] = document
 for i in range(len(__list__)):
     id_doc = __list__[i]
-    key = 'ide'
+    key = 'title'
     document = database[id_doc]
     document[key] = str(uuid.uuid4()) 
     database[id_doc] = document 
